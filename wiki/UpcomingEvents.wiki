@@ -5,6 +5,6 @@
 Events that project members are attending
 
 = Events =
-* Google IO
-* SDForum SAM SIG
-* CloudCamp/Structure08
+  * Google IO
+  * SDForum SAM SIG
+  * CloudCamp/Structure08
