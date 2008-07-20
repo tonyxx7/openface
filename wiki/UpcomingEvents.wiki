@@ -4,7 +4,10 @@
 
 Events that project members are attending
 
-= Events =
+= Upcoming Events = 
+  * [http://www.facebook.com/f8 Facebook F8]
+
+= Past Events =
   * Google IO
-  * SDForum SAM SIG
-  * CloudCamp/Structure08
+  * [http://www.sdforum.org/index.cfm?fuseaction=Calendar.eventDetail&eventId=13083&nodeID=1 SDForum SAM SIG]
+  * [http://www.cloudcamp.com CloudCamp]/Structure08
