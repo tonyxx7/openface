@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright (C) 2008 App Tsunami, Inc. -->
+<!-- 
+   This program is free software: you can redistribute it and/or modify 
+   it under the terms of the GNU General Public License as published by 
+   the Free Software Foundation, either version 3 of the License, or 
+   (at your option) any later version. 
+
+   This program is distributed in the hope that it will be useful, 
+   but WITHOUT ANY WARRANTY; without even the implied warranty of 
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+   GNU General Public License for more details. 
+
+   You should have received a copy of the GNU General Public License 
+   along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+ -->
+<!-- application.xml -->
+<Module>
+<ModulePrefs 
+title="Send A Card"
+author_email="dev@apptsunami.com" 
+author="sc" 
+summary="Send a card to friends!"
+description="Send cool cards to all your friends!
+Start spreading smiles now!
+
+This application is built using the Open Face Framework. 
+"
+icon="http://994402a7.fb.joyent.us/sendacard/fb.demo/images/sendacard.gif"
+thumbnail="http://994402a7.fb.joyent.us/sendacard/fb.demo/images/sendacardplash.gif"
+developerContactEmail="dev@apptsunami.com"
+userSupportEmail="support@apptsunami.com"
+callBackUrl="http://994402a7.fb.joyent.us/sendacard/fb.demo/openface/php/"
+applicationType="website"
+mobileIntegration=""
+ipAddressesOfServers=""
+>
+<canvasPage 
+  URL="http://apps.facebook.com/sendacarddemo"
+  useFBML="true"
+/>
+<canYourApplicationBeAddedOnFacebook
+whoCanAdd="users"
+whichPage="all"
+postAddURL="http://994402a7.fb.joyent.us/sendacard/fb.demo/openface/php/index.php?opf_postInstall="
+sideNavURL="http://apps.facebook.com/sendacarddemo/index.php"
+helpURL="http://994402a7.fb.joyent.us/sendacard/fb.demo/php/help.php"
+postRemoveRL="http://994402a7.fb.joyent.us/sendacard/fb.demo/openface/php/index.php?opf_postUninstall="
+/>
+</ModulePrefs>
+</Module>
