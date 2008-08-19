@@ -9,5 +9,6 @@ Events that project members are attending
 
 = Past Events =
   * Google IO
+  * SDForum Innovation Fair
   * [http://www.sdforum.org/index.cfm?fuseaction=Calendar.eventDetail&eventId=13083&nodeID=1 SDForum SAM SIG]
   * [http://www.cloudcamp.com CloudCamp]/Structure08
