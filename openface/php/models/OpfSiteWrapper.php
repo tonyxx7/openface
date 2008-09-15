@@ -302,7 +302,7 @@ class OpfSiteWrapper {
       OpfDebugUtil::logOutput('notificationsSend $uid='.$uid
         .' $message="'.$message.'"');
     } // if
-    $this->facebook->api_client->notifications_send($uid, $message);
+    $this->facebook->api_client->notifications_send($uid, $message, 'user_to_user');
   } // notificationsSend
 
   public function getRequestIdList() {
