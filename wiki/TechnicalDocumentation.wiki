@@ -1,14 +1,16 @@
+#labels Phase-Implementation,Featured
 How To Write a Social Application Using The Open Face Framework
 7/2008
  
 == Introduction ==
-Social application is a new breed of software application launched when Facebook opened its API in 2007.  In order to develop a Facebook application, a developer must be proficient in several languages including PHP (or Java or C#) and JavaScript. In addition, the developer has to learn new technologies including FBML, FQL, Mock AJAX. There is an opportunity to significantly reduce the amount of effort involved in the initial learning and development as well as on-going maintenance of these applications.
+Social applications are a new breed of software application launched when Facebook opened its API in 2007.  In order to develop a Facebook application, a developer must be proficient in several languages including PHP (or Java or C#) and JavaScript. In addition, the developer has to learn new technologies including FBML, FQL, Mock AJAX. There is an opportunity to significantly reduce the amount of effort involved in the initial learning and development as well as on-going maintenance of these applications. There are several other benefits, such as sharing information across multiple social networks.
  
-In addition, Open Social is a strong alternative to the Facebook API but requires completely different application architecture. Developers find it time-consuming to support both APIs in one application. This is analogous to the multi-platform support challenges of UNIX. There is no easy solution to help ease this pain and we feel there is a significant opportunity to solve this problem. 
+In addition, OpenSocial is a strong alternative to the Facebook API but requires a completely different application architecture. Developers find it time-consuming to support both APIs in one application. This is analogous to the multi-platform support challenges of UNIX. There is no easy solution to help ease this pain and we feel there is a significant opportunity to solve this problem. 
 
-The Open Face Framework is a PHP framework (Ruby in process) used for building applications that run on Facebook and Open Social platforms. Open Face is a set of libraries that you add into your PHP application that enables the same source code to run inside different social network containers including Facebook, Bebo and Open Social containers like MySpace, Hi5 & Orkut. 
-Social Application Basics
-For the most part, a social application is similar to any other web application that runs inside the web browser.  Some of the key differences between social applications and general web applications include:
+The Openface Framework is a PHP framework (Java in process) used for building applications that run on Facebook and OpenSocial platforms. Openface is a set of libraries that you add into your PHP application that enables the same source code to run inside different social network containers including Facebook, Bebo and Open Social containers like MySpace, Hi5 & Orkut. 
+
+=== Social Application Basics ===
+For the most part, a social application is similar to any other web application that runs inside a web browser.  Some of the key differences between social applications and general web applications include:
 
  * A general web application can be built using any industry standard technology.  A social application may have to use technologies developed by the container.  Some industry standard software may not be used by social applications.
  * A general web application manages its authentication.  A social application runs inside a social network container that manages authentication.
