@@ -1,34 +1,38 @@
-
 How To Write a Social Application Using The Open Face Framework
 7/2008
  
-Introduction
-Social application is a new breed of software application launched when Facebook opened its API in 2007.  In order to develop a Facebook application, a developer must be proficient in several languages including PHP (or Java or C#) and JavaScript. In addition, the developer has to learn new technologies including FBML, FQL, Mock AJAX. There is an opportunity to significantly reduce the amount of effort involved in the initial learning and development as well as on-going maintenance of these applications. 
+== Introduction ==
+Social application is a new breed of software application launched when Facebook opened its API in 2007.  In order to develop a Facebook application, a developer must be proficient in several languages including PHP (or Java or C#) and JavaScript. In addition, the developer has to learn new technologies including FBML, FQL, Mock AJAX. There is an opportunity to significantly reduce the amount of effort involved in the initial learning and development as well as on-going maintenance of these applications.
+ 
 In addition, Open Social is a strong alternative to the Facebook API but requires completely different application architecture. Developers find it time-consuming to support both APIs in one application. This is analogous to the multi-platform support challenges of UNIX. There is no easy solution to help ease this pain and we feel there is a significant opportunity to solve this problem. 
+
 The Open Face Framework is a PHP framework (Ruby in process) used for building applications that run on Facebook and Open Social platforms. Open Face is a set of libraries that you add into your PHP application that enables the same source code to run inside different social network containers including Facebook, Bebo and Open Social containers like MySpace, Hi5 & Orkut. 
 Social Application Basics
 For the most part, a social application is similar to any other web application that runs inside the web browser.  Some of the key differences between social applications and general web applications include:
-•	A general web application can be built using any industry standard technology.  A social application may have to use technologies developed by the container.  Some industry standard software may not be used by social applications.
-•	A general web application manages its authentication.  A social application runs inside a social network container that manages authentication.
-•	A general web application manages its user data.  A social application runs inside a social network container that manages the user’s social data which can be accessed by the social application via a set of API provided by the container.  In addition,, the social application’s access to the user’s social data is governed by the Terms of Service defined by the container.
-•	A general web application has control of the full extent of the web browser.  A social application runs inside the canvas allowed by the container.  
-•	A general web application can place advertisement anywhere.  A social application can only place advertisement in the areas designated by the container.  
-•	A general web application has a lot of flexibility in its user interface design.  A social application needs to conform to the ‘norm’ expected by members of the container.  
+
+ * A general web application can be built using any industry standard technology.  A social application may have to use technologies developed by the container.  Some industry standard software may not be used by social applications.
+ * A general web application manages its authentication.  A social application runs inside a social network container that manages authentication.
+ * A general web application manages its user data.  A social application runs inside a social network container that manages the user’s social data which can be accessed by the social application via a set of API provided by the container.  In addition,, the social application’s access to the user’s social data is governed by the Terms of Service defined by the container.
+ * A general web application has control of the full extent of the web browser.  A social application runs inside the canvas allowed by the container.  
+ * A general web application can place advertisement anywhere.  A social application can only place advertisement in the areas designated by the container.  
+ * A general web application has a lot of flexibility in its user interface design.  A social application needs to conform to the ‘norm’ expected by members of the container.  
 The Open Face Framework was developed to cope with these differences.  Embedded inside the Open Face Framework is a set of engineering ‘best practice’ learned from real world application development experience.
 We suggest the following 5 step process:
  
-1. Plan the Layout of your App
-2. Install the Openface library
-3. Implement the User Interface for your App
-4. Setup/Configure Openface to call your UI
-5. Deploy
-- set up on web host (Joyent, Freehostia)
-- set up on container (Facebook, Hi5) 
-Design the User Interface
+ # Plan the Layout of your App
+ # Install the Openface library
+ # Implement the User Interface for your App
+ # Setup/Configure Openface to call your UI
+ # Deploy
+ * set up on web host (Joyent, Freehostia)
+ * set up on container (Facebook, Hi5) 
+
+==== Design the User Interface ====
+
 Facebook built several applications (Events, Groups, Photos, Marketplace, Videos) before it opens up its API to outside developers.  These original applications set the user interface layout style expected by Facebook members.  The following screen shot of the Events application illustrates the key elements of the user interface style:
   
 The user interface is a hierarchy with the following elements:
-Frame
+*Frame*
 The frame is the outermost element controlled by the social application.  Its dimensions may be controlled by the container such that anything outside of the allowed dimensions is clipped and invisible to the user.  The frame determines the general layout of the social application.
 Canvas
 Typically a social application has multiple canvases each supporting a ‘command’.  For example, the Events application has six canvases: Browse Events, Export Events, Upcoming Events, Friends’ Events, Past Events, Birthdays.  
