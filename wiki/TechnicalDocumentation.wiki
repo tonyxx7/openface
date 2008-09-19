@@ -3,7 +3,7 @@ How To Write a Social Application Using The Open Face Framework
 7/2008
  
 == Introduction ==
-Social applications are a new breed of software application launched when Facebook opened its API in 2007.  In order to develop a Facebook application, a developer must be proficient in several languages including PHP (or Java or C#) and JavaScript. In addition, the developer has to learn new technologies including FBML, FQL, Mock AJAX. There is an opportunity to significantly reduce the amount of effort involved in the initial learning and development as well as on-going maintenance of these applications. There are several other benefits, such as sharing information across multiple social networks.
+_Social applications_ are a new breed of software application launched when Facebook opened its API in 2007.  In order to develop a Facebook application, a developer must be proficient in several languages including PHP (or Java or C#) and JavaScript. In addition, the developer has to learn new technologies including FBML, FQL, Mock AJAX. There is an opportunity to significantly reduce the amount of effort involved in the initial learning and development as well as on-going maintenance of these applications. There are several other benefits, such as sharing information across multiple social networks.
  
 In addition, OpenSocial is a strong alternative to the Facebook API but requires a completely different application architecture. Developers find it time-consuming to support both APIs in one application. This is analogous to the multi-platform support challenges of UNIX. There is no easy solution to help ease this pain and we feel there is a significant opportunity to solve this problem. 
 
@@ -29,42 +29,56 @@ We suggest the following 5 step process:
  * set up on web host (Joyent, Freehostia)
  * set up on container (Facebook, Hi5) 
 
-==== Design the User Interface ====
-
+=== Design the User Interface ===
 Facebook built several applications (Events, Groups, Photos, Marketplace, Videos) before it opens up its API to outside developers.  These original applications set the user interface layout style expected by Facebook members.  The following screen shot of the Events application illustrates the key elements of the user interface style:
   
 The user interface is a hierarchy with the following elements:
-*Frame*
+
+==== Frame ====
 The frame is the outermost element controlled by the social application.  Its dimensions may be controlled by the container such that anything outside of the allowed dimensions is clipped and invisible to the user.  The frame determines the general layout of the social application.
-Canvas
+
+==== Canvas ====
 Typically a social application has multiple canvases each supporting a ‘command’.  For example, the Events application has six canvases: Browse Events, Export Events, Upcoming Events, Friends’ Events, Past Events, Birthdays.  
 Visually the canvas names are rendered in two rows: along the top edge of the frame (Browse Events, Export Events) or as a row of manila folder tabs with the canvas names shown on the tab.  The user clicks on a tab to show the canvas (Upcoming Events, Friends’ Events, Past Events, Birthdays).  Only one canvas can be displayed at any time.
-Portlet
+
+==== Portlet ====
 The term ‘portlet’ is borrowed from JSR168 in spirit but the technical implementation details are different.  Portlets are object classes that can be sub-classed to provide the variations and yet share common code.
+
 Inside each canvas is a mosaic of HTML controls and Javascripts which may be remixed in different canvases.  In many cases these HTML controls and Javascripts may be similar but not exactly the same in different canvases.  It is a good practice to organize parts of the canvas into portlets so that you can implement the portlets in an object-oriented style to share code.  Note that portlets can contain other portlets.
-Dialogs and Control
+
+==== Dialogs and Control ====
 Social applications have some recurring patterns of controls like the Invite Friend dialog that appears in most applications.  These are reusable groups of control whose implementation can be shared among applications.  Dialogs and controls are child elements of portlets, canvases or frames.
-Theory of Operation
-Social Application Architecture
-Facebook
+
+=== Theory of Operation ===
+==== _Social Application Architecture_ ====
+==== Facebook ====
 Facebook supports two approaches:
-1.	Write your social application logic that runs on the server and generates standard HTML + JavaScript that runs inside an iframe.  The iframe approach allows you to deliver an existing web site inside an iframe in the Facebook application.  
-2.	Write your social application logic that runs on the server and generates FBML, Mock AJAX, FQL and other Facebook-specific technologies.  This approach requires more custom development effort but offer various benefits.  
+
+  # Write your social application logic that runs on the server and generates standard HTML + JavaScript that runs inside an iframe.  The iframe approach allows you to deliver an existing web site inside an iframe in the Facebook application.  
+  # Write your social application logic that runs on the server and generates FBML, Mock AJAX, FQL and other Facebook-specific technologies.  This approach requires more custom development effort but offer various benefits.  
+
 The Open Face Framework is designed to support developing social applications using approach 2.
-Open Social
+
+==== Open Social ====
 Open Social supports two approaches:
-1.	Write most of your social application logic using JavaScript and calling JavaScript Open Social API.
-2.	Write the minimal logic in JavaScript and most of your social application logic on the server side using the Open Social REST API (Open Social v0.8).
+
+  # Write most of your social application logic using JavaScript and calling JavaScript Open Social API.
+  # Write the minimal logic in JavaScript and most of your social application logic on the server side using the Open Social REST API (Open Social v0.8).
+
 The Open Face Framework is designed to support developing social applications using approach 2.
-Model-View-Controller Pattern
-The Open Face Framework provides an implementation of the Model-View-Controller pattern.  In essence, Open Face provides a social application   
-The Open Face Framework provides an implementation of the Controller which receives all HTTP requests (which could be forwarded by the container).  The HTTP request contains several groups of parameters:
-•	Parameters as part of an on-screen URL or HTML FORM parameters
-•	Parameters provided by the container
-•	Parameters injected by Open Face Framework
-Controller
-The Open Face Framework provides an implementation of the Controller.  The controller invokes the main frame object provided by the application.
-All calls to your application are made to openface/php/index.php which handles all HTTP requests.  The callback URL of your own application registered with the container needs to be applicationDir/openface/php/index.php.  On Facebook this URL is the Callback URL in the Edit Settings screen of the Facebook Developer application.
+
+==== _Model-View-Controller Pattern_ ====
+The Open Face Framework provides an implementation of the _Model-View-Controller_ pattern.  In essence, Open Face provides a social application   
+
+The Open Face Framework provides an implementation of the _Controller_ which receives all HTTP requests (which could be forwarded by the container).  The HTTP request contains several groups of parameters:
+  * Parameters as part of an on-screen URL or HTML FORM parameters
+  * Parameters provided by the container
+  * Parameters injected by Open Face Framework
+
+==== _Controller_ ====
+The Open Face Framework provides an implementation of the _Controller_.  The controller invokes the _main frame_ object provided by the application.
+
+All calls to your application are made to `openface/php/index.php` which handles all HTTP requests.  The callback URL of your own application registered with the container needs to be applicationDir/openface/php/index.php.  On Facebook this URL is the Callback URL in the Edit Settings screen of the Facebook Developer application.
 View
 Frame
 Open Face provides three base classes of frame: 
@@ -317,4 +331,4 @@ Returns an object which extends any one of OpfFrameSingleCanvas, OpfFrameMultiCa
 This method is called when the user first installs the application. Typically this method inserts a row in a database table to store the $uid. 
 •	static function unregisterUser($uid, $dbConnect) 
 This method is called when the user uninstalls the application. Typically this method marks a row in a database table to show that $uid is no longer an application user. 
-OpfHelp.php	It is a HTML file that displays a universal online help for the user. 
+OpfHelp.php	It is a HTML file that displays a universal online help for the user.
