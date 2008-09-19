@@ -78,43 +78,53 @@ The Open Face Framework provides an implementation of the _Controller_ which rec
 ==== _Controller_ ====
 The Open Face Framework provides an implementation of the _Controller_.  The controller invokes the _main frame_ object provided by the application.
 
-All calls to your application are made to `openface/php/index.php` which handles all HTTP requests.  The callback URL of your own application registered with the container needs to be applicationDir/openface/php/index.php.  On Facebook this URL is the Callback URL in the Edit Settings screen of the Facebook Developer application.
-View
-Frame
+All calls to your application are made to `openface/php/index.php` which handles all HTTP requests.  The callback URL of your own application registered with the container needs to be `applicationDir/openface/php/index.php`.  On Facebook this URL is the _Callback URL_ in the _Edit Settings_ screen of the Facebook _Developer_ application.
+
+==== _View_ ====
+==== Frame ====
 Open Face provides three base classes of frame: 
-OpfSingleCanvas.php
-It is the simplest frame with only one child canvas.
-OpfMultiCanvas.php
-It supports a single row of tabs below the application name.
-OpfMultiCanvas2.php
-It supports two rows of canvas labels.  One row is display along the top edge of the frame above the application name.  Another row is shown below the application name.
+
+  * *OpfSingleCanvas.php*
+  It is the simplest frame with only one child canvas.
+
+  * *OpfMultiCanvas.php*
+  It supports a single row of tabs below the application name.
+
+  * *OpfMultiCanvas2.php*
+  It supports two rows of canvas labels.  One row is display along the top edge of the frame above the application name.  Another row is shown below the application name.
+
 The application provides a frame class which is a child class of one of the three base classes.
-Canvas
+
+==== Canvas ====
 - Any object instances (like Controls, widgets, or most application segments,) will be a subclass of OPFCanvas
 
 DETAILS FOR APPLICATION EXECUTION PATH.
-- All calls to your application are made to index.php *1*, and any submission always goes back to index.php or a submission file (*1* The callback URL of your own application registered with FaceBook needs to be application/openface/php/index.php) (IMAGE ATTACHED)
-- GetCanvas gives the ObjectNames of optional canvas controls that determines canvas content
-- GetCanvas2 returns the ObjectNames of the canvas tab-control
-- Every Canvas object requires that the following methods are defined: "getIcon, getTag, getLabel, render"
- -- getIcon –returns the image file name, and For Facebook, - if it is up to 16x16 pixels - will show up to the left of the label in the canvas/Tab
- -- getTag uses the php variable "tag" for switching from tag to tag. It needs to be url-friendly
- -- getLabel is a human-readable word, which, for Facebook can be localized by the app based on the FB-user Language Preference.
- -- render generates the HTML content (fragment), and return as a string.  Let the caller function assemble the different pieces, and render in their own liberty.  (In the future, this technique may gives us the ability to optimize the HTML, tag-translation if someone feels called to code it, or dynamic content. Another function can be getting rid of blank lines or empty spaces to reduce the number of bytes transferred.)
-- The frame (FrameMultiCanvas) has a default Canvas function, called by getDefaultCanvas which returns a tab which points to the default canvas name you set yourself.
-- Optionally, if you are using any additional canvas that is required for the app, use the optional function getMustInstallCanvasTagList.
+
+  * All calls to your application are made to `index.php`^1^, and any submission always goes back to index.php or a submission file (^1^ - The callback URL of your own application registered with FaceBook needs to be `application/openface/php/index.php`) (IMAGE ATTACHED)
+  * GetCanvas gives the ObjectNames of optional canvas controls that determines canvas content
+  * GetCanvas2 returns the ObjectNames of the canvas tab-control
+  * Every Canvas object requires that the following methods are defined: "getIcon, getTag, getLabel, render"
+    * `getIcon` –returns the image file name, and For Facebook, - if it is up to 16x16 pixels - will show up to the left of the label in the canvas/Tab
+    * `getTag` uses the php variable "tag" for switching from tag to tag. It needs to be url-friendly
+    * `getLabel` is a human-readable word, which, for Facebook can be localized by the app based on the FB-user Language Preference.
+    * `render` generates the HTML content (fragment), and return as a string.  Let the caller function assemble the different pieces, and render in their own liberty.  (In the future, this technique may gives us the ability to optimize the HTML, tag-translation if someone feels called to code it, or dynamic content. Another function can be getting rid of blank lines or empty spaces to reduce the number of bytes transferred.)
+  * The frame (FrameMultiCanvas) has a default Canvas function, called by getDefaultCanvas which returns a tab which points to the default canvas name you set yourself.
+  * Optionally, if you are using any additional canvas that is required for the app, use the optional function getMustInstallCanvasTagList.
  
 HOW TO CREATE YOUR FIRST CANVAS
-- We create our sample application using the Portlet Design Pattern, utilizing "getIcon, getTag, getLabel, render" function calls
-- "php\portlets" directory is where all the portlets are placed
-- the frames and canvas are under the "php\views" directory
-In the php\portlets folder, you can create the portlets that are shared classes and will be used to extend other portlets.  All portlets will eventually be subclasses of "OpfPortlet".
-OpfPortlet has three methods:
-- the portlet objects instanciate as a child of the canvas object (following the jsr168 convention)
-- the portlet’s render method returns html fragments defining the portlet and is captured in a string, which is then returned as the function return, or
-- invoking the portlet directly
+
+  * We create our sample application using the Portlet Design Pattern, utilizing "getIcon, getTag, getLabel, render" function calls
+  * `php\portlets` directory is where all the portlets are placed
+  * the frames and canvas are under the `php\views` directory
+
+In the `php\portlets` folder, you can create the portlets that are shared classes and will be used to extend other portlets.  All portlets will eventually be subclasses of _OpfPortlet_.
+_OpfPortlet_ has three methods:
+  * the portlet objects instanciate as a child of the canvas object (following the jsr168 convention)
+  * the portlet’s render method returns html fragments defining the portlet and is captured in a string, which is then returned as the function return, or
+  * invoking the portlet directly
 
 HOW TO ADD MYSQL DATABASE-SUPPORT
+
 - MySQL does not require the surrogate key as the primary key, but Openface database support does, and it is always called objid.  You benefit from the Database support of Openface by referring to the surrogate key (TableName.ObjID) in every SQL clause.
 - Connecting to the DB, (Opening the Database connection) is an action performed by the Openface Framework once the database controller is instantiated.  This is done using the parameters in the OpfConfig which are mentioned below, in the section on setting up the application on Facebook
 - Database Tables in Openface are composed of classes.  In the php/models directory there is one file per table in the database.
@@ -129,8 +139,8 @@ HOW TO ADD MYSQL DATABASE-SUPPORT
 Now we look at a portlet to see why we bother to extend OpfDataTable
 - Instantiate new TableCard (by defining a $table), we call the table method which returns an array where the key = objid, and Value is contained in another array, so the table comes back as a 2-D array where the database values comprise the second array.  The first dimension is referenced by objid, and the second dim is referred by fieldname.  To get this done in native PHP is why we extend this class OpfDataTable, which leads to more optimized code performance.
 
+TO TIE APP WITH OPF
 
-4. TO TIE APP WITH OPF
 - Breaking down your code based on the development stage is useful to separate different development threads.  (Common conventions, like directory structure and naming – as in the three primary stages titled "Development", "Demo", & "Production" – come from RubyOnRails.)
  . php Opf directory contents are three files which define the application to OpenFace: (OpfApplication.php, OpfApplicationConfig.php, & OpfHelp.php)
  . opfApplication defines application specifics like [STEVE - WE NEED CONCISE EXAMPLES]
@@ -144,55 +154,79 @@ unregisteruser
  
 So the application code is in the Views using Frame, Canvas and Portlet.  It should be ready to run, once you've deployed it. Need much more specific description of what this means
 
-Development Setup
+=== Development Setup ===
 The following description assumes that you will be writing your application in PHP which does not require a compilation step and no object code is generated.
-First create a top-level directory which will be called applicationDir for the rest of this document.  It is a good practice to use the same directory name as the Facebook directory name.  For example, in the sample Send-A-Card application, the top-level directory is called sendacard.  
+
+First create a top-level directory which will be called _applicationDir_ for the rest of this document.  It is a good practice to use the same directory name as the Facebook directory name.  For example, in the sample _Send-A-Card_ application, the top-level directory is called `sendacard`.
+
 Later we will discuss where to install this top-level directory.
-The Open Face Framework
-Create a second-level directory called openface.  Download the Open Face Framework from http://www.openfaceframework.org into this directory.  This is the only directory used to store files from the Open Face Framework.  All other directories under the top-level directory is used by your application.  
-Application Directories
+
+==== _The Open Face Framework_ ====
+Create a second-level directory called `openface`.  Download the Open Face Framework from http://www.openfaceframework.org into this directory.  This is the only directory used to store files from the Open Face Framework.  All other directories under the top-level directory is used by your application.  
+
+==== _Application Directories_ =====
 It is recommended that you create the following second-level directories:
-css
-images
-images.demo
-js
-php
-xml
+  `css`
+
+  `images`
+
+  `images.demo`
+
+  `js`
+
+  `php`
+
+  `xml`
+
 You can place the source files of your application into these directories.  The name of a directory defines the type of file that will be stored in the directory.  
-css
-All *.css files are placed in the applicationDir/css directory.  Open Face will automatically include every file in this directory in a style tag like this:
-<style type=”text/css”>app.css</style>
-js
+
+==== css ====
+All *.css files are placed in the _applicationDir_`/css` directory.  Open Face will automatically include every file in this directory in a style tag like this:
+`<style type=”text/css”>app.css</style>`
+
+==== js ====
 All *.js files are placed in the applicationDir/js directory.  Open Face will automatically include every file in this directory in a script tag like this:
 <script src=”app.js”/>
-images
+
+==== images ====
 All graphics files used from development to production are placed in the applicationDir/images directory.  Open Face provides helper methods to generate HTML <img> tags with the assumption that all images are stored in this directory. 
-images.demo
+
+==== images.demo ====
 Sometimes you may have images used only for demonstration purposes.  These images are not the production images.
-xml
+
+==== xml ====
 Sometimes your application may have xml files too.  For example, Open Social containers require an xml file to register your application.
-php
+
+==== php ====
 All PHP files are placed in the applicationDir/php directory.  In order to manage the complexity, the PHP files are further organized into subdirectories:
-actions
-dialogs
-models
-opf
-portlets
-views
-actions
+  `actions`
+  `dialogs`
+  `models`
+  `opf`
+  `portlets`
+   `views`
+
+==== actions ====
 When the user clicks on a button to submit the contents of a form, the contents of the form are POSTed to an ‘action’ which is invoked.
-dialogs
+
+==== dialogs ====
 Dialogs are commonly used dialogs like the Invite Friend dialog.
-models
+
+==== models ====
 Open Face Framework implements the model-view-controller pattern.  The models directory stores the classes that implements the views.
-opf
+
+==== opf ====
 This sub-directory stores configuration files in the syntax of PHP.  These files provide constants for the Openface Framework to do its work.
-portlets
+
+==== portlets ====
 Portlet classes are stored here.
-views
+
+==== views ====
 Open Face Framework implements the model-view-controller pattern.  The views directory stores the classes that implements the views.  Specifically the frame and canvas classes are stored here.
-Deployment
-Set up on web host
+
+=== Deployment ===
+
+===== _Set up on web host_ ====
 5. (a) - set up on host Joyent/Freehostia
 5.a (i) on Freehostia, you can have subdomains right in your www root, which is where we put our SendACard directory.
 YOU SHOULD NOW HAVE A COMPLETE URL TO REFER TO: e.g.:
@@ -203,7 +237,8 @@ Freehostia: http://sendacard.freehostia.com/fb.dev/openface/php/index.php?opf_po
 - Go to the OpfApplicationConfig.php and verify that any DATABASE variables are commented for non-DB apps (why is this necessary?), or tied to the correct location for DB Apps.  These variables are dependant on the database and application hosting environment.
 5.a (ii) on Joyent, you are given a unix-like path where you receive a ./web/public folder, under which the "sendacard" app needs to be copied.
 You need to create an account and be informed that your level of
-Set up on Container – Facebook
+
+==== _Set up on Container – Facebook_ ====
 5.(b) -  Add the Developer application (see Facebook for the latest instructions) and register the new app. "Apply for Application Key" generates two variables for you.  These two (API Key & Secret) must be placed in this  OpfApplicationConfig.php file for the application to be recognized by FB
 Click "Edit Settings" to change CallBack URL variable which needs to go to "openface\php", where the index.php is located
 CanvasPageURL is also created here and placed in the OpfApplicationConfig.php file.
@@ -217,16 +252,16 @@ Choose your own preferences, as in "Developer Install only", which keeps normal 
  
 NOW we verify that php\MODELS is configured, which handles DATABASE interaction.  This is specific to applications that utilize database interaction.  GiveToPersonAction.php is an example in SendACard app.  If there is no database backend, then the application is ready for execution.  Point your browser to the path set up in 5(b) above.
 
-==
- 
-Appendix A:		Open Face Framework source files
-The openface directory contains source files from the Open Face Framework. You should not modify any file inside. 
-css	Open Face css files
-images	Open Face graphic image files
-js	Open Face Javascript files
-LICENSE.txt	Open Face license
-php	Open Face PHP files. Details are described in the following sections.
-openface/php
+=== Appendix A:		Open Face Framework source files ===
+The `openface` directory contains source files from the Open Face Framework. You should not modify any file inside. 
+
+|| css || Open Face css files ||
+|| images || Open Face graphic image files ||
+|| js || Open Face Javascript files ||
+|| LICENSE.txt || Open Face license ||
+|| php || Open Face PHP files. Details are described in the following sections ||
+
+==== openface/php ====
 help.php	It calls php/opf/OpfHelp.php to launch the help command which is located on the upper right hand corner of the application. 
 index.php	This is the main entry point of the application. On Facebook you should register the callback URL as $APP_CALLBACK_URL/openface/php/index.php. 
 OpfConfig.php	It contains global configuration parameters used by Open Face Framework. The application should not directly reference these constants because they may change. 
@@ -234,26 +269,29 @@ OpfContext.php	It contains a runtime object used by Open Face Framework. The app
 OpfDebugUtil.php	It contains some debugging methods. The application may call these methods. NOTE: The author considers this module 'can be improved' and will enhance it in the future. 
 OpfLocalization.php	It contains localized strings used by Open Face Framework. The application should not directly reference this class. 
 OpfSystemProfile.php	It contains some system parameters used by Open Face Framework. The application should not directly reference this class. 
-openface/php/core
+
+==== openface/php/core ====
 OpfCoreWebObject.php	It is the parent class of some classes in openface/php/views. The application should not directly reference this class. 
-openface/php/controllers
+
+==== openface/php/controllers ====
 OpfController.php	It is the main controller of Open Face Framework. It will calls OpfApplication::getMainFrame to create a main frame object that renders the application. 
 OpfControllerPostInstall.php	It is called after the user installs the application. It calls OpfApplication::registerUser. 
 OpfControllerPostUninstall.php	It is called after the user uninstalls the application. It calls OpfApplication::unregisterUser. 
-openface/php/views
+
+==== openface/php/views ====
 Definition
 frame	A frame is the outermost user interface element of the application. The Open Face controller renders a 'main' frame that contains the rest of the application. 
 A frame contains several user interface elements: 
-•	an optional row of hyperlinks at the top with an underline
-•	the application name
-•	an optional list of buttons
-•	an optional row of canvas names
-•	a canvas
+  * an optional row of hyperlinks at the top with an underline
+  * the application name
+  * an optional list of buttons
+  * an optional row of canvas names
+  * a canvas
 canvas	Typically an application shows a different canvas depending on the user operation. For example, in the sendACard application, there can be four canvases: 
-•	Cards I can select to send
-•	Inbox with cards friends sent to me
-•	Outbox with cards I sent to friends
-•	Cards I have kept
+  * Cards I can select to send
+  * Inbox with cards friends sent to me
+  * Outbox with cards I sent to friends
+  * Cards I have kept
 The contents of each canvas can be completely different from each other. 
 panel	A canvas can have multiple variations inside. For example, in the Cards I can select to send canvas, cards may be organized by category such as Christmas, birthday, friendship, Thanksgiving, ... etc. Each category can be a panel showing only cards in that category. 
 OpfUIObject.php	It is the parent class of other Open Face classes. Application should not directly reference this class.
@@ -308,27 +346,27 @@ OpfGoogleMap.php	It wraps calls to Google Map in a PHP method.
 application callback source files
 Application callback files should be placed in the directory php/opf. There are three callback files. 
 OpfApplicationConfig.php	It contains a list of constants needed by Open Face Framework. 
-•	APPLICATION_TITLE
-•	APP_CALLBACK_URL
-•	APP_INVOCATION_URL
-•	HELP_PAGE
-•	IMAGES_DIRECTORY
-•	APPLICATION_ICON
-•	APPLICATION_SPLASH
-•	MY_DATABASE_PATH
-•	MY_DATABASE_NAME
-•	MY_DATABASE_USER
-•	MY_DATABASE_PASSWORD
-•	SITE_API_KEY
-•	SITE_API_SECRET
-•	SITE_USERNAME
-•	SITE_PASSWORD
-•	SITE_NAME
+  * APPLICATION_TITLE
+  * APP_CALLBACK_URL
+  * APP_INVOCATION_URL
+  * HELP_PAGE
+  * IMAGES_DIRECTORY
+  * APPLICATION_ICON
+  * APPLICATION_SPLASH
+  * MY_DATABASE_PATH
+  * MY_DATABASE_NAME
+  * MY_DATABASE_USER
+  * MY_DATABASE_PASSWORD
+  * SITE_API_KEY
+  * SITE_API_SECRET
+  * SITE_USERNAME
+  * SITE_PASSWORD
+  * SITE_NAME
 OpfApplication.php	It must implement the following methods: 
-•	static public function getMainFrame() 
+  * static public function getMainFrame() 
 Returns an object which extends any one of OpfFrameSingleCanvas, OpfFrameMultiCanvas2.php, OpfFrameMultiCanvas.php. 
-•	static function registerUser($uid, $dbConnect, $dataSource) 
+  * static function registerUser($uid, $dbConnect, $dataSource) 
 This method is called when the user first installs the application. Typically this method inserts a row in a database table to store the $uid. 
-•	static function unregisterUser($uid, $dbConnect) 
+  * static function unregisterUser($uid, $dbConnect) 
 This method is called when the user uninstalls the application. Typically this method marks a row in a database table to show that $uid is no longer an application user. 
 OpfHelp.php	It is a HTML file that displays a universal online help for the user.
