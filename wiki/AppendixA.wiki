@@ -19,3 +19,10 @@ The `openface` directory contains source files from the Open Face Framework. You
 ==== openface/php/core ====
 || OpfCoreWebObject.php || It is the parent class of some classes in `openface/php/views`. The application should not directly reference this class ||
 
+==== openface/php/controllers ====
+|| OpfController.php || It is the main controller of Open Face Framework. It will calls `OpfApplication::getMainFrame` to create a main frame object that renders the application || 
+|| OpfControllerPostInstall.php || It is called after the user installs the application. It calls `OpfApplication::registerUser` ||
+|| OpfControllerPostUninstall.php || It is called after the user uninstalls the application. It calls `OpfApplication::unregisterUser` || 
+
+==== openface/php/views ====
+*Definition*
