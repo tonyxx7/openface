@@ -11,7 +11,7 @@ Create a second-level directory called `openface`.  Download the Open Face Frame
 ==== _Application Directories_ =====
 It is recommended that you create the following second-level directories:
 
-  `css images images.demo js php xml`
+`css images images.demo js php xml`
 
 You can place the source files of your application into these directories.  The name of a directory defines the type of file that will be stored in the directory.  
 
@@ -61,7 +61,7 @@ Open Face Framework implements the model-view-controller pattern.  The views dir
 
 ==== _Set up on web host_ ====
   * 5. (a) - set up on host Joyent/Freehostia
-   * 5.a (i) on Freehostia, you can have subdomains right in your www root, which is where we put our SendACard directory.
+  * 5.a (i) on Freehostia, you can have subdomains right in your www root, which is where we put our SendACard directory.
 YOU SHOULD NOW HAVE A COMPLETE URL TO REFER TO: e.g.:
 Joyent: http://www.joyent.com[/?/? - Need FURTHER DETAIL HERE]
 Freehostia: http://sendacard.freehostia.com/fb.dev/openface/php/index.php?opf_postInstall=
@@ -69,18 +69,22 @@ Freehostia: http://sendacard.freehostia.com/fb.dev/openface/php/index.php?opf_po
   * Copy the entire "sendacard" directory with contents into this folder (whichever host)
   * Go to the OpfApplicationConfig.php and verify that any DATABASE variables are commented for non-DB apps (why is this necessary?), or tied to the correct location for DB Apps.  These variables are dependant on the database and application hosting environment.
   * 5.a (ii) on Joyent, you are given a unix-like path where you receive a ./web/public folder, under which the "sendacard" app needs to be copied.
+
 You need to create an account and be informed that your level of
 
 ==== _Set up on Container ñ Facebook_ ====
-5.(b) -  Add the Developer application (see Facebook for the latest instructions) and register the new app. "Apply for Application Key" generates two variables for you.  These two (API Key & Secret) must be placed in this  OpfApplicationConfig.php file for the application to be recognized by FB
+  * 5.(b) -  Add the Developer application (see Facebook for the latest instructions) and register the new app. "Apply for Application Key" generates two variables for you.  These two (API Key & Secret) must be placed in this  OpfApplicationConfig.php file for the application to be recognized by FB
 Click "Edit Settings" to change CallBack URL variable which needs to go to "openface\php", where the index.php is located
+
 CanvasPageURL is also created here and placed in the OpfApplicationConfig.php file.
+
 Ensure that FBML is being used, and not iFrame.  Leave everything else as default
+
 Verify that the App _CAN_ be added on FB - this enables installation.  This opens up the Installation OPTIONS dialogue:
  
-Post ADD URL needs to be put in from above: http://sendacard.freehostia.com/fb.dev/openface/php/index.php?opf_postInstall=
-And Post-Remove URL as well: http://sendacard.freehostia.com/fb.dev/openface/php/index.php?opf_postUninstall=
+  * Post ADD URL needs to be put in from above: http://sendacard.freehostia.com/fb.dev/openface/php/index.php?opf_postInstall=
+  * Post-Remove URL as well: http://sendacard.freehostia.com/fb.dev/openface/php/index.php?opf_postUninstall=
  
 Choose your own preferences, as in "Developer Install only", which keeps normal users away from app, and "Private Installation", which suppresses news feed generation
  
-NOW we verify that php\MODELS is configured, which handles DATABASE interaction.  This is specific to applications that utilize database interaction.  GiveToPersonAction.php is an example in SendACard app.  If there is no database backend, then the application is ready for execution.  Point your browser to the path set up in 5(b) above.
+NOW we verify that `php\MODELS` is configured, which handles DATABASE interaction.  This is specific to applications that utilize database interaction.  GiveToPersonAction.php is an example in SendACard app.  If there is no database backend, then the application is ready for execution.  Point your browser to the path set up in 5(b) above.
