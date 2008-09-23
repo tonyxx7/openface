@@ -14,11 +14,11 @@ For the most part, a social application is similar to any other web application 
 
  * A general web application can be built using any industry standard technology.  A social application may have to use technologies developed by the container.  Some industry standard software may not be used by social applications.
  * A general web application manages its authentication.  A social application runs inside a social network container that manages authentication.
- * A general web application manages its user data.  A social application runs inside a social network container that manages the user’s social data which can be accessed by the social application via a set of API provided by the container.  In addition,, the social application’s access to the user’s social data is governed by the Terms of Service defined by the container.
+ * A general web application manages its user data.  A social application runs inside a social network container that manages the userís social data which can be accessed by the social application via a set of API provided by the container.  In addition,, the social applicationís access to the userís social data is governed by the Terms of Service defined by the container.
  * A general web application has control of the full extent of the web browser.  A social application runs inside the canvas allowed by the container.  
  * A general web application can place advertisement anywhere.  A social application can only place advertisement in the areas designated by the container.  
- * A general web application has a lot of flexibility in its user interface design.  A social application needs to conform to the ‘norm’ expected by members of the container.  
-The Open Face Framework was developed to cope with these differences.  Embedded inside the Open Face Framework is a set of engineering ‘best practice’ learned from real world application development experience.
+ * A general web application has a lot of flexibility in its user interface design.  A social application needs to conform to the ënormí expected by members of the container.  
+The Open Face Framework was developed to cope with these differences.  Embedded inside the Open Face Framework is a set of engineering ëbest practiceí learned from real world application development experience.
 We suggest the following 5 step process:
  
  # Plan the Layout of your App
@@ -38,11 +38,11 @@ The user interface is a hierarchy with the following elements:
 The frame is the outermost element controlled by the social application.  Its dimensions may be controlled by the container such that anything outside of the allowed dimensions is clipped and invisible to the user.  The frame determines the general layout of the social application.
 
 ==== Canvas ====
-Typically a social application has multiple canvases each supporting a ‘command’.  For example, the Events application has six canvases: Browse Events, Export Events, Upcoming Events, Friends’ Events, Past Events, Birthdays.  
-Visually the canvas names are rendered in two rows: along the top edge of the frame (Browse Events, Export Events) or as a row of manila folder tabs with the canvas names shown on the tab.  The user clicks on a tab to show the canvas (Upcoming Events, Friends’ Events, Past Events, Birthdays).  Only one canvas can be displayed at any time.
+Typically a social application has multiple canvases each supporting a ëcommandí.  For example, the Events application has six canvases: Browse Events, Export Events, Upcoming Events, Friendsí Events, Past Events, Birthdays.  
+Visually the canvas names are rendered in two rows: along the top edge of the frame (Browse Events, Export Events) or as a row of manila folder tabs with the canvas names shown on the tab.  The user clicks on a tab to show the canvas (Upcoming Events, Friendsí Events, Past Events, Birthdays).  Only one canvas can be displayed at any time.
 
 ==== Portlet ====
-The term ‘portlet’ is borrowed from JSR168 in spirit but the technical implementation details are different.  Portlets are object classes that can be sub-classed to provide the variations and yet share common code.
+The term ëportletí is borrowed from JSR168 in spirit but the technical implementation details are different.  Portlets are object classes that can be sub-classed to provide the variations and yet share common code.
 
 Inside each canvas is a mosaic of HTML controls and Javascripts which may be remixed in different canvases.  In many cases these HTML controls and Javascripts may be similar but not exactly the same in different canvases.  It is a good practice to organize parts of the canvas into portlets so that you can implement the portlets in an object-oriented style to share code.  Note that portlets can contain other portlets.
 
@@ -104,7 +104,7 @@ DETAILS FOR APPLICATION EXECUTION PATH.
   * GetCanvas gives the ObjectNames of optional canvas controls that determines canvas content
   * GetCanvas2 returns the ObjectNames of the canvas tab-control
   * Every Canvas object requires that the following methods are defined: "getIcon, getTag, getLabel, render"
-    * `getIcon` –returns the image file name, and For Facebook, - if it is up to 16x16 pixels - will show up to the left of the label in the canvas/Tab
+    * `getIcon` ñreturns the image file name, and For Facebook, - if it is up to 16x16 pixels - will show up to the left of the label in the canvas/Tab
     * `getTag` uses the php variable "tag" for switching from tag to tag. It needs to be url-friendly
     * `getLabel` is a human-readable word, which, for Facebook can be localized by the app based on the FB-user Language Preference.
     * `render` generates the HTML content (fragment), and return as a string.  Let the caller function assemble the different pieces, and render in their own liberty.  (In the future, this technique may gives us the ability to optimize the HTML, tag-translation if someone feels called to code it, or dynamic content. Another function can be getting rid of blank lines or empty spaces to reduce the number of bytes transferred.)
@@ -120,253 +120,43 @@ HOW TO CREATE YOUR FIRST CANVAS
 In the `php\portlets` folder, you can create the portlets that are shared classes and will be used to extend other portlets.  All portlets will eventually be subclasses of _OpfPortlet_.
 _OpfPortlet_ has three methods:
   * the portlet objects instanciate as a child of the canvas object (following the jsr168 convention)
-  * the portlet’s render method returns html fragments defining the portlet and is captured in a string, which is then returned as the function return, or
+  * the portletís render method returns html fragments defining the portlet and is captured in a string, which is then returned as the function return, or
   * invoking the portlet directly
 
 HOW TO ADD MYSQL DATABASE-SUPPORT
 
-- MySQL does not require the surrogate key as the primary key, but Openface database support does, and it is always called objid.  You benefit from the Database support of Openface by referring to the surrogate key (TableName.ObjID) in every SQL clause.
-- Connecting to the DB, (Opening the Database connection) is an action performed by the Openface Framework once the database controller is instantiated.  This is done using the parameters in the OpfConfig which are mentioned below, in the section on setting up the application on Facebook
-- Database Tables in Openface are composed of classes.  In the php/models directory there is one file per table in the database.
-- Files are conventionally named TableTableName (sentence case) so table "Card" has file "TableCard.php" (TableNames in MySQL _are_ Case Sensitive, so please pay attention to use the correct case)
-- Every table must extend the class OpfDataTable: class TableCard extends OpfDataTable {...}
-- Each column in the table gets defined as a constant value for the variables (TABLENAME, .., .., ..)
-- The GetDBConnect? function is defined in the class "OpfUIObject", which is the parent of OpfCanvas, OpfFrame, OpfPortlets, and basically all the UI objects. So therefore any Application UI class (e.g., PortletCardList) will inherit this function.
-- This is the required parameter to instantiate all the table classes.
-- Any table instance extends OpfDataTable (which is the table root). 
-- The Sort Order is defined in the OpfDataTable class, which comes from objid.  This is in contrast with conventional DB practice, where random sorting is the norm.  This default sort order can be modified in the child class via the "setDefaultSortOrder" string variable.  Because it is a string, multiple columns can be defined. Other environmental variables that can be modified (like LimitCount) are in this class def file.
+  * MySQL does not require the surrogate key as the primary key, but Openface database support does, and it is always called objid.  You benefit from the Database support of Openface by referring to the surrogate key (TableName.ObjID) in every SQL clause.
+  * Connecting to the DB, (Opening the Database connection) is an action performed by the Openface Framework once the database controller is instantiated.  This is done using the parameters in the OpfConfig which are mentioned below, in the section on setting up the application on Facebook
+  * Database Tables in Openface are composed of classes.  In the php/models directory there is one file per table in the database.
+  * Files are conventionally named TableTableName (sentence case) so table "Card" has file "TableCard.php" (TableNames in MySQL _are_ Case Sensitive, so please pay attention to use the correct case)
+  * Every table must extend the class OpfDataTable: class TableCard extends OpfDataTable {...}
+  * Each column in the table gets defined as a constant value for the variables (TABLENAME, .., .., ..)
+  * The GetDBConnect? function is defined in the class "OpfUIObject", which is the parent of OpfCanvas, OpfFrame, OpfPortlets, and basically all the UI objects. So therefore any Application UI class (e.g., PortletCardList) will inherit this function.
+  * This is the required parameter to instantiate all the table classes.
+  * Any table instance extends OpfDataTable (which is the table root). 
+  * The Sort Order is defined in the OpfDataTable class, which comes from objid.  This is in contrast with conventional DB practice, where random sorting is the norm.  This default sort order can be modified in the child class via the "setDefaultSortOrder" string variable.  Because it is a string, multiple columns can be defined. Other environmental variables that can be modified (like LimitCount) are in this class def file.
 
 Now we look at a portlet to see why we bother to extend OpfDataTable
-- Instantiate new TableCard (by defining a $table), we call the table method which returns an array where the key = objid, and Value is contained in another array, so the table comes back as a 2-D array where the database values comprise the second array.  The first dimension is referenced by objid, and the second dim is referred by fieldname.  To get this done in native PHP is why we extend this class OpfDataTable, which leads to more optimized code performance.
+  * Instantiate new TableCard (by defining a $table), we call the table method which returns an array where the key = objid, and Value is contained in another array, so the table comes back as a 2-D array where the database values comprise the second array.  The first dimension is referenced by objid, and the second dim is referred by fieldname.  To get this done in native PHP is why we extend this class OpfDataTable, which leads to more optimized code performance.
 
 TO TIE APP WITH OPF
 
-- Breaking down your code based on the development stage is useful to separate different development threads.  (Common conventions, like directory structure and naming – as in the three primary stages titled "Development", "Demo", & "Production" – come from RubyOnRails.)
- . php Opf directory contents are three files which define the application to OpenFace: (OpfApplication.php, OpfApplicationConfig.php, & OpfHelp.php)
- . opfApplication defines application specifics like [STEVE - WE NEED CONCISE EXAMPLES]
- . opfApplicationConfig defines a number of Constants
- . OpfHelp is a descriptive file where you are able to specify application usage details down to any level necessary
+Breaking down your code based on the development stage is useful to separate different development threads.  (Common conventions, like directory structure and naming ñ as in the three primary stages titled "Development", "Demo", & "Production" ñ come from RubyOnRails.)
+ 
+php Opf directory contents are three files which define the application to OpenFace: (OpfApplication.php, OpfApplicationConfig.php, & OpfHelp.php)
+  * opfApplication defines application specifics like [STEVE - WE NEED CONCISE EXAMPLES]
+  * opfApplicationConfig defines a number of Constants
+  * OpfHelp is a descriptive file where you are able to specify application usage details down to any level necessary
+
 OpfApplication.php is a class of its own, and does not have a parent class. It provides 3 STATIC Functions:
-getMainFrame - returns an instance of the FrameMultiCanvas, that extends OpfFrameMultiCanvas2
-registeruser
-unregisteruser
+  * getMainFrame - returns an instance of the FrameMultiCanvas, that extends OpfFrameMultiCanvas2
+  * registeruser
+  * unregisteruser
+
 [PANEL, description coming later, can be used for navigation inside a canvas, just as canvas can serve navigation inside a frame]
  
 So the application code is in the Views using Frame, Canvas and Portlet.  It should be ready to run, once you've deployed it. Need much more specific description of what this means
 
 === Development Setup ===
-The following description assumes that you will be writing your application in PHP which does not require a compilation step and no object code is generated.
 
-First create a top-level directory which will be called _applicationDir_ for the rest of this document.  It is a good practice to use the same directory name as the Facebook directory name.  For example, in the sample _Send-A-Card_ application, the top-level directory is called `sendacard`.
-
-Later we will discuss where to install this top-level directory.
-
-==== _The Open Face Framework_ ====
-Create a second-level directory called `openface`.  Download the Open Face Framework from http://www.openfaceframework.org into this directory.  This is the only directory used to store files from the Open Face Framework.  All other directories under the top-level directory is used by your application.  
-
-==== _Application Directories_ =====
-It is recommended that you create the following second-level directories:
-  `css`
-
-  `images`
-
-  `images.demo`
-
-  `js`
-
-  `php`
-
-  `xml`
-
-You can place the source files of your application into these directories.  The name of a directory defines the type of file that will be stored in the directory.  
-
-==== css ====
-All *.css files are placed in the _applicationDir_`/css` directory.  Open Face will automatically include every file in this directory in a style tag like this:
-`<style type=”text/css”>app.css</style>`
-
-==== js ====
-All *.js files are placed in the applicationDir/js directory.  Open Face will automatically include every file in this directory in a script tag like this:
-<script src=”app.js”/>
-
-==== images ====
-All graphics files used from development to production are placed in the applicationDir/images directory.  Open Face provides helper methods to generate HTML <img> tags with the assumption that all images are stored in this directory. 
-
-==== images.demo ====
-Sometimes you may have images used only for demonstration purposes.  These images are not the production images.
-
-==== xml ====
-Sometimes your application may have xml files too.  For example, Open Social containers require an xml file to register your application.
-
-==== php ====
-All PHP files are placed in the applicationDir/php directory.  In order to manage the complexity, the PHP files are further organized into subdirectories:
-  `actions`
-  `dialogs`
-  `models`
-  `opf`
-  `portlets`
-   `views`
-
-==== actions ====
-When the user clicks on a button to submit the contents of a form, the contents of the form are POSTed to an ‘action’ which is invoked.
-
-==== dialogs ====
-Dialogs are commonly used dialogs like the Invite Friend dialog.
-
-==== models ====
-Open Face Framework implements the model-view-controller pattern.  The models directory stores the classes that implements the views.
-
-==== opf ====
-This sub-directory stores configuration files in the syntax of PHP.  These files provide constants for the Openface Framework to do its work.
-
-==== portlets ====
-Portlet classes are stored here.
-
-==== views ====
-Open Face Framework implements the model-view-controller pattern.  The views directory stores the classes that implements the views.  Specifically the frame and canvas classes are stored here.
-
-=== Deployment ===
-
-===== _Set up on web host_ ====
-5. (a) - set up on host Joyent/Freehostia
-5.a (i) on Freehostia, you can have subdomains right in your www root, which is where we put our SendACard directory.
-YOU SHOULD NOW HAVE A COMPLETE URL TO REFER TO: e.g.:
-Joyent: http://www.joyent.com[/?/? - Need FURTHER DETAIL HERE]
-Freehostia: http://sendacard.freehostia.com/fb.dev/openface/php/index.php?opf_postInstall=
- - set up on Facebook [WOULD A LINK BE SUFFICIENT, OR IS MORE DETAIL NEEDED HERE?]
-- Copy the entire "sendacard" directory with contents into this folder (whichever host)
-- Go to the OpfApplicationConfig.php and verify that any DATABASE variables are commented for non-DB apps (why is this necessary?), or tied to the correct location for DB Apps.  These variables are dependant on the database and application hosting environment.
-5.a (ii) on Joyent, you are given a unix-like path where you receive a ./web/public folder, under which the "sendacard" app needs to be copied.
-You need to create an account and be informed that your level of
-
-==== _Set up on Container – Facebook_ ====
-5.(b) -  Add the Developer application (see Facebook for the latest instructions) and register the new app. "Apply for Application Key" generates two variables for you.  These two (API Key & Secret) must be placed in this  OpfApplicationConfig.php file for the application to be recognized by FB
-Click "Edit Settings" to change CallBack URL variable which needs to go to "openface\php", where the index.php is located
-CanvasPageURL is also created here and placed in the OpfApplicationConfig.php file.
-Ensure that FBML is being used, and not iFrame.  Leave everything else as default
-Verify that the App _CAN_ be added on FB - this enables installation.  This opens up the Installation OPTIONS dialogue:
- 
-Post ADD URL needs to be put in from above: http://sendacard.freehostia.com/fb.dev/openface/php/index.php?opf_postInstall=
-And Post-Remove URL as well: http://sendacard.freehostia.com/fb.dev/openface/php/index.php?opf_postUninstall=
- 
-Choose your own preferences, as in "Developer Install only", which keeps normal users away from app, and "Private Installation", which suppresses news feed generation
- 
-NOW we verify that php\MODELS is configured, which handles DATABASE interaction.  This is specific to applications that utilize database interaction.  GiveToPersonAction.php is an example in SendACard app.  If there is no database backend, then the application is ready for execution.  Point your browser to the path set up in 5(b) above.
-
-=== Appendix A:		Open Face Framework source files ===
-The `openface` directory contains source files from the Open Face Framework. You should not modify any file inside. 
-
-|| css || Open Face css files ||
-|| images || Open Face graphic image files ||
-|| js || Open Face Javascript files ||
-|| LICENSE.txt || Open Face license ||
-|| php || Open Face PHP files. Details are described in the following sections ||
-
-==== openface/php ====
-help.php	It calls php/opf/OpfHelp.php to launch the help command which is located on the upper right hand corner of the application. 
-index.php	This is the main entry point of the application. On Facebook you should register the callback URL as $APP_CALLBACK_URL/openface/php/index.php. 
-OpfConfig.php	It contains global configuration parameters used by Open Face Framework. The application should not directly reference these constants because they may change. 
-OpfContext.php	It contains a runtime object used by Open Face Framework. The application should not directly reference this class. 
-OpfDebugUtil.php	It contains some debugging methods. The application may call these methods. NOTE: The author considers this module 'can be improved' and will enhance it in the future. 
-OpfLocalization.php	It contains localized strings used by Open Face Framework. The application should not directly reference this class. 
-OpfSystemProfile.php	It contains some system parameters used by Open Face Framework. The application should not directly reference this class. 
-
-==== openface/php/core ====
-OpfCoreWebObject.php	It is the parent class of some classes in openface/php/views. The application should not directly reference this class. 
-
-==== openface/php/controllers ====
-OpfController.php	It is the main controller of Open Face Framework. It will calls OpfApplication::getMainFrame to create a main frame object that renders the application. 
-OpfControllerPostInstall.php	It is called after the user installs the application. It calls OpfApplication::registerUser. 
-OpfControllerPostUninstall.php	It is called after the user uninstalls the application. It calls OpfApplication::unregisterUser. 
-
-==== openface/php/views ====
-Definition
-frame	A frame is the outermost user interface element of the application. The Open Face controller renders a 'main' frame that contains the rest of the application. 
-A frame contains several user interface elements: 
-  * an optional row of hyperlinks at the top with an underline
-  * the application name
-  * an optional list of buttons
-  * an optional row of canvas names
-  * a canvas
-canvas	Typically an application shows a different canvas depending on the user operation. For example, in the sendACard application, there can be four canvases: 
-  * Cards I can select to send
-  * Inbox with cards friends sent to me
-  * Outbox with cards I sent to friends
-  * Cards I have kept
-The contents of each canvas can be completely different from each other. 
-panel	A canvas can have multiple variations inside. For example, in the Cards I can select to send canvas, cards may be organized by category such as Christmas, birthday, friendship, Thanksgiving, ... etc. Each category can be a panel showing only cards in that category. 
-OpfUIObject.php	It is the parent class of other Open Face classes. Application should not directly reference this class.
-OpfFrameSingleCanvas.php	It implements a frame with only one canvas. There is no row of canvas names. Application may subclass from it to create its 'main' frame. This is not typical.
-OpfFrameMultiCanvas.php	it implements a frame with a row of canvas names below the application name. Application may subclass from it to create its 'main' frame. 
-OpfFrameMultiCanvas2.php	It implements a frame with two rows of canvas names: one row at the top and one row below the application name. Application may subclass from it to create its 'main' frame. 
-OpfCanvasHelp.php	It implements the canvas when the user clicks on help.
-OpfCanvasMultiPanel.php	It implements a canvas that has multiple sub-panels. Application may subclass from it to create a canvas class. 
-OpfCanvas.php	It is the parent class of all application canvas classes. Application must subclass from it to create a canvas class. 
-OpfExecuteAction.php	OpfFrame* calls this class to executes actions. Application may subclass from it to call its actions. 
-OpfPanel.php	It is the parent class of all application panel classes. Application must subclass from it to create a panel class. 
-OpfWebParam.php	It is the parent class of OpfFormParam.php and OpfUrlParam.php. Application should not directly reference this class. 
-OpfFormParam.php	It is a helper class to construct HTML FORM parameters. 
-OpfUrlParam.php	It is a helper class to construct URL parameters typically used in HREF. 
-openface/php/portlets
-The term portlet has been used in JSR168 and Spring Framework. The portlet concept is borrowed in spirit in the Open Face Framework to refer to a section on the screen with mostly self-contained actions and may be reused in different places of the user interface. Otherwise there is no technical similarity. 
-I have found the portlet concept to be of much practical value for several reasons: 
-1.	It allows the same user-interface logic to be reused in multiple places.
-2.	It allows subclassing of similar user-interface logic.
-3.	It allows Open Face to provide more commonly used portlets in the future so the application can subclass and reuse common logic.
-OpfPortlet.php	It is the parent class of all application portlet classes. Application must subclass from it to create all Portlet classes. 
-OpfPortletInvite.php	It is a commonly used portlet for inviting friends. Application may subclass from it to create a friend invitation portlet. 
-openface/php/controls
-These are helper classes to generate HTML controls. Application may instantiate these classes, call its various population methods to fill in the details and then call its render() method to generate a HTML string fragment. 
-OpfControlHrefBar.php	It implements a row of equally-spaced HREF. It is useful for showing a list of panel names. 
-OpfControlHrefRow.php	It implements a row of equally-spaced HREF. It is useful for showing a list of panel names. 
-OpfControlRadio.php	It generates an array of HTML radio controls. 
-OpfControlSelect.php	It generates a HTML SELECT control. 
-openface/php/callbacks
-A callback is an asynchronous callback target invoked via an AJAX or Mock AJAX call. 
-OpfCallback.php	It is the parent class of all application callback classes. Application must subclass it to create a callback class. 
-openface/php/actions
-An action is a method executed when a HTTP request is received before rendering the application user interface. OpfExecuteAction.php examines the HTTP request parameters to determine which action should be executed and then calls the action. 
-OpfAction.php	It is the parent class of all application action classes. Application must subclass it to create a action class. 
-openface/php/helpers
-OpfHelperHtml.php	It contains some static methods to generate HTML fragments. The application may call these methods directly. 
-OpfHelperHtmlSite.php	It contains some static methods to generate social site-dependentHTML fragments. There is a different file for each social site. The application may call these methods directly. 
-OpfHelperJs.php	It contains some static methods to generate Javascript fragments. There is a different file for each social site. The application may call these methods directly. 
-openface/php/models
-It supports methods of the social network and MySQL tables. 
-OpfSiteWrapper.php	It wraps the social network api object. There is a different PHP file for each social network. Application may not call this class directly. 
-OpfDataSource.php	It wraps the social network api alls in OpfSiteWrapper.php. Application calls methods in this class to access social network functionality. 
-OpfDataTable.php	It provides commonly-used methods when wrapping a MySQL table. Application may subclass from it to create a MySQL table class. 
-OpfDbConnect.php	It provides commonly-used methods when using MySQL. Application may call methods in this class directly. 
-OpfSqlStatement.php	It is the parent class of the other OpfSql* classes. Application may not call this class directly. 
-OpfSqlInsert.php	It is a helper class to generate a MySQL INSERT statement. Application may call methods in this class. 
-OpfSqlSelect.php	It is a helper class to generate a MySQL SELECT statement. Application may call methods in this class. 
-OpfSqlUpdate.php	It is a helper class to generate a MySQL UPDATE statement. Application may call methods in this class. 
-openface/php/intfc
-It supports various commonly used third-party REST API. More third-party support will be added in the future. 
-OpfGoogleMap.php	It wraps calls to Google Map in a PHP method.
-application callback source files
-Application callback files should be placed in the directory php/opf. There are three callback files. 
-OpfApplicationConfig.php	It contains a list of constants needed by Open Face Framework. 
-  * APPLICATION_TITLE
-  * APP_CALLBACK_URL
-  * APP_INVOCATION_URL
-  * HELP_PAGE
-  * IMAGES_DIRECTORY
-  * APPLICATION_ICON
-  * APPLICATION_SPLASH
-  * MY_DATABASE_PATH
-  * MY_DATABASE_NAME
-  * MY_DATABASE_USER
-  * MY_DATABASE_PASSWORD
-  * SITE_API_KEY
-  * SITE_API_SECRET
-  * SITE_USERNAME
-  * SITE_PASSWORD
-  * SITE_NAME
-OpfApplication.php	It must implement the following methods: 
-  * static public function getMainFrame() 
-Returns an object which extends any one of OpfFrameSingleCanvas, OpfFrameMultiCanvas2.php, OpfFrameMultiCanvas.php. 
-  * static function registerUser($uid, $dbConnect, $dataSource) 
-This method is called when the user first installs the application. Typically this method inserts a row in a database table to store the $uid. 
-  * static function unregisterUser($uid, $dbConnect) 
-This method is called when the user uninstalls the application. Typically this method marks a row in a database table to show that $uid is no longer an application user. 
-OpfHelp.php	It is a HTML file that displays a universal online help for the user.
+=== Appendix A: Open Face Framework source files ===
