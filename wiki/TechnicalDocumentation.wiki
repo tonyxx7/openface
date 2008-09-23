@@ -249,3 +249,151 @@ Choose your own preferences, as in "Developer Install only", which keeps normal 
 NOW we verify that `php\MODELS` is configured, which handles DATABASE interaction.  This is specific to applications that utilize database interaction.  GiveToPersonAction.php is an example in SendACard app.  If there is no database backend, then the application is ready for execution.  Point your browser to the path set up in 5(b) above.
 
 === Appendix A: Open Face Framework source files ===
+The `openface` directory contains source files from the Open Face Framework. You should not modify any file inside. 
+
+|| css || Open Face css files ||
+|| images || Open Face graphic image files ||
+|| js || Open Face Javascript files ||
+|| LICENSE.txt || Open Face license ||
+|| php || Open Face PHP files. Details are described in the following sections ||
+
+==== openface/php ====
+|| help.php || It calls `php/opf/OpfHelp.php` to launch the help command which is located on the upper right hand corner of the application ||
+|| index.php || This is the main entry point of the application. On Facebook you should register the callback URL as `$APP_CALLBACK_URL/openface/php/index.php` ||
+|| OpfConfig.php || It contains global configuration parameters used by Open Face Framework. The application should not directly reference these constants because they may change ||
+|| OpfContext.php || It contains a runtime object used by Open Face Framework. The application should not directly reference this class ||
+|| OpfDebugUtil.php || It contains some debugging methods. The application may call these methods. NOTE: The author considers this module 'can be improved' and will enhance it in the future ||
+|| OpfLocalization.php || It contains localized strings used by Open Face Framework. The application should not directly reference this class ||
+|| OpfSystemProfile.php || It contains some system parameters used by Open Face Framework. The application should not directly reference this class ||
+
+==== openface/php/core ====
+|| OpfCoreWebObject.php || It is the parent class of some classes in `openface/php/views`. The application should not directly reference this class ||
+
+==== openface/php/controllers ====
+|| OpfController.php || It is the main controller of Open Face Framework. It will calls `OpfApplication::getMainFrame` to create a main frame object that renders the application || 
+|| OpfControllerPostInstall.php || It is called after the user installs the application. It calls `OpfApplication::registerUser` ||
+|| OpfControllerPostUninstall.php || It is called after the user uninstalls the application. It calls `OpfApplication::unregisterUser` || 
+
+==== openface/php/views ====
+*Definition*
+
+*frame*
+
+A frame is the outermost user interface element of the application. The Open Face controller renders a 'main' frame that contains the rest of the application. 
+
+A frame contains several user interface elements: 
+  * an optional row of hyperlinks at the top with an underline
+  * the application name
+  * an optional list of buttons
+  * an optional row of canvas names
+  * a canvas
+
+*canvas*
+
+Typically an application shows a different canvas depending on the user operation. For example, in the sendACard application, there can be four canvases: 
+  * Cards I can select to send
+  * Inbox with cards friends sent to me
+  * Outbox with cards I sent to friends
+  * Cards I have kept
+
+The contents of each canvas can be completely different from each other. 
+
+*panel*
+
+A canvas can have multiple variations inside. For example, in the Cards I can select to send canvas, cards may be organized by category such as Christmas, birthday, friendship, Thanksgiving, ... etc. Each category can be a _panel_ showing only cards in that category.
+
+|| OpfUIObject.php || It is the parent class of other Open Face classes. Application should not directly reference this class ||
+|| OpfFrameSingleCanvas.php || It implements a frame with only one canvas. There is no row of canvas names. Application may subclass from it to create its 'main' frame. This is not typical ||
+|| OpfFrameMultiCanvas.php || It implements a frame with a row of canvas names below the application name. Application may subclass from it to create its 'main' frame ||
+|| OpfFrameMultiCanvas2.php || It implements a frame with two rows of canvas names: one row at the top and one row below the application name. Application may subclass from it to create its 'main' frame ||
+|| OpfCanvasHelp.php || It implements the canvas when the user clicks on help ||
+|| OpfCanvasMultiPanel.php || It implements a canvas that has multiple sub-panels. Application may subclass from it to create a canvas class ||
+|| OpfCanvas.php || It is the parent class of all application canvas classes. Application must subclass from it to create a canvas class ||
+|| OpfExecuteAction.php || OpfFrame`*` calls this class to executes actions. Application may subclass from it to call its actions ||
+|| OpfPanel.php || It is the parent class of all application panel classes. Application must subclass from it to create a panel class ||
+|| OpfWebParam.php || It is the parent class of OpfFormParam.php and OpfUrlParam.php. Application should not directly reference this class ||
+|| OpfFormParam.php || It is a helper class to construct HTML FORM parameters ||
+|| OpfUrlParam.php || It is a helper class to construct URL parameters typically used in HREF ||
+
+==== openface/php/portlets ====
+The term _portlet_ has been used in JSR168 and Spring Framework. The portlet concept is borrowed in spirit in the Open Face Framework to refer to a section on the screen with mostly self-contained actions and may be reused in different places of the user interface. Otherwise there is no technical similarity. 
+
+I have found the portlet concept to be of much practical value for several reasons: 
+  # It allows the same user-interface logic to be reused in multiple places.
+  # It allows subclassing of similar user-interface logic.
+  # It allows Open Face to provide more commonly used portlets in the future so the application can subclass and reuse common logic.
+|| OpfPortlet.php || It is the parent class of all application portlet classes. Application must subclass from it to create all Portlet classes ||
+|| OpfPortletInvite.php || It is a commonly used portlet for inviting friends. Application may subclass from it to create a friend invitation portlet || 
+
+==== openface/php/controls ====
+These are helper classes to generate HTML controls. Application may instantiate these classes, call its various population methods to fill in the details and then call its `render()` method to generate a HTML string fragment.
+
+|| OpfControlHrefBar.php || It implements a row of equally-spaced HREF. It is useful for showing a list of panel names ||
+|| OpfControlHrefRow.php || It implements a row of equally-spaced HREF. It is useful for showing a list of panel names ||
+|| OpfControlRadio.php || It generates an array of HTML radio controls ||
+|| OpfControlSelect.php || It generates a HTML SELECT control ||
+
+==== openface/php/callbacks ====
+A callback is an asynchronous callback target invoked via an AJAX or Mock AJAX call. 
+|| OpfCallback.php || It is the parent class of all application callback classes. Application must subclass it to create a callback class ||
+
+==== openface/php/actions ====
+An action is a method executed when a HTTP request is received before rendering the application user interface. OpfExecuteAction.php examines the HTTP request parameters to determine which action should be executed and then calls the action. 
+|| OpfAction.php || It is the parent class of all application action classes. Application must subclass it to create a action class ||
+
+==== openface/php/helpers ====
+|| OpfHelperHtml.php || It contains some static methods to generate HTML fragments. The application may call these methods directly ||
+|| OpfHelperHtmlSite.php || It contains some static methods to generate social site-dependentHTML fragments. There is a different file for each social site. The application may call these methods directly ||
+|| OpfHelperJs.php || It contains some static methods to generate Javascript fragments. There is a different file for each social site. The application may call these methods directly ||
+
+==== openface/php/models ====
+It supports methods of the social network and MySQL tables. 
+|| OpfSiteWrapper.php || It wraps the social network api object. There is a different PHP file for each social network. Application may not call this class directly ||
+|| OpfDataSource.php || It wraps the social network api alls in `OpfSiteWrapper.php`. Application calls methods in this class to access social network functionality ||
+|| OpfDataTable.php || It provides commonly-used methods when wrapping a MySQL table. Application may subclass from it to create a MySQL table class ||
+|| OpfDbConnect.php || It provides commonly-used methods when using MySQL. Application may call methods in this class directly || 
+|| OpfSqlStatement.php || It is the parent class of the other OpfSql`*` classes. Application may not call this class directly || 
+|| OpfSqlInsert.php || It is a helper class to generate a MySQL INSERT statement. Application may call methods in this class || 
+|| OpfSqlSelect.php || It is a helper class to generate a MySQL SELECT statement. Application may call methods in this class ||
+|| OpfSqlUpdate.php || It is a helper class to generate a MySQL UPDATE statement. Application may call methods in this class ||
+
+==== openface/php/intfc ====
+It supports various commonly used third-party REST API. More third-party support will be added in the future. 
+|| OpfGoogleMap.php || It wraps calls to Google Map in a PHP method ||
+
+==== _application callback source files_ ====
+Application callback files should be placed in the directory `php/opf`. There are three callback files. 
+
+*OpfApplicationConfig.php*
+
+It contains a list of constants needed by Open Face Framework. 
+  * APPLICATION_TITLE
+  * APP_CALLBACK_URL
+  * APP_INVOCATION_URL
+  * HELP_PAGE
+  * IMAGES_DIRECTORY
+  * APPLICATION_ICON
+  * APPLICATION_SPLASH
+  * MY_DATABASE_PATH
+  * MY_DATABASE_NAME
+  * MY_DATABASE_USER
+  * MY_DATABASE_PASSWORD
+  * SITE_API_KEY
+  * SITE_API_SECRET
+  * SITE_USERNAME
+  * SITE_PASSWORD
+  * SITE_NAME
+
+*OpfApplication.php*
+
+It must implement the following methods: 
+  * static public function getMainFrame() 
+  Returns an object which extends any one of `OpfFrameSingleCanvas`, `OpfFrameMultiCanvas2.php`, `OpfFrameMultiCanvas.php`. 
+  * static function registerUser($uid, $dbConnect, $dataSource) 
+  This method is called when the user first installs the application. Typically this method inserts a row in a database table to store the $uid. 
+  * static function unregisterUser($uid, $dbConnect) 
+  This method is called when the user uninstalls the application. Typically this method marks a row in a database table to show that $uid is no longer an application user. 
+
+*OpfHelp.php*
+
+It is a HTML file that displays a universal online help for the user.
