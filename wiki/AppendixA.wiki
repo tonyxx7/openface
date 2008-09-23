@@ -110,3 +110,40 @@ It supports methods of the social network and MySQL tables.
 ==== openface/php/intfc ====
 It supports various commonly used third-party REST API. More third-party support will be added in the future. 
 || OpfGoogleMap.php || It wraps calls to Google Map in a PHP method ||
+
+==== _application callback source files_ ====
+Application callback files should be placed in the directory `php/opf`. There are three callback files. 
+
+*OpfApplicationConfig.php*
+
+It contains a list of constants needed by Open Face Framework. 
+  * APPLICATION_TITLE
+  * APP_CALLBACK_URL
+  * APP_INVOCATION_URL
+  * HELP_PAGE
+  * IMAGES_DIRECTORY
+  * APPLICATION_ICON
+  * APPLICATION_SPLASH
+  * MY_DATABASE_PATH
+  * MY_DATABASE_NAME
+  * MY_DATABASE_USER
+  * MY_DATABASE_PASSWORD
+  * SITE_API_KEY
+  * SITE_API_SECRET
+  * SITE_USERNAME
+  * SITE_PASSWORD
+  * SITE_NAME
+
+*OpfApplication.php*
+
+It must implement the following methods: 
+  * static public function getMainFrame() 
+  Returns an object which extends any one of `OpfFrameSingleCanvas`, `OpfFrameMultiCanvas2.php`, `OpfFrameMultiCanvas.php`. 
+  * static function registerUser($uid, $dbConnect, $dataSource) 
+  This method is called when the user first installs the application. Typically this method inserts a row in a database table to store the $uid. 
+  * static function unregisterUser($uid, $dbConnect) 
+  This method is called when the user uninstalls the application. Typically this method marks a row in a database table to show that $uid is no longer an application user. 
+
+*OpfHelp.php*
+
+It is a HTML file that displays a universal online help for the user.
