@@ -1,0 +1,21 @@
+=== Appendix A:		Open Face Framework source files ===
+The `openface` directory contains source files from the Open Face Framework. You should not modify any file inside. 
+
+|| css || Open Face css files ||
+|| images || Open Face graphic image files ||
+|| js || Open Face Javascript files ||
+|| LICENSE.txt || Open Face license ||
+|| php || Open Face PHP files. Details are described in the following sections ||
+
+==== openface/php ====
+|| help.php || It calls `php/opf/OpfHelp.php` to launch the help command which is located on the upper right hand corner of the application ||
+|| index.php || This is the main entry point of the application. On Facebook you should register the callback URL as `$APP_CALLBACK_URL/openface/php/index.php` ||
+|| OpfConfig.php || It contains global configuration parameters used by Open Face Framework. The application should not directly reference these constants because they may change ||
+|| OpfContext.php || It contains a runtime object used by Open Face Framework. The application should not directly reference this class ||
+|| OpfDebugUtil.php || It contains some debugging methods. The application may call these methods. NOTE: The author considers this module 'can be improved' and will enhance it in the future ||
+|| OpfLocalization.php || It contains localized strings used by Open Face Framework. The application should not directly reference this class ||
+|| OpfSystemProfile.php || It contains some system parameters used by Open Face Framework. The application should not directly reference this class ||
+
+==== openface/php/core ====
+|| OpfCoreWebObject.php || It is the parent class of some classes in `openface/php/views`. The application should not directly reference this class ||
+
