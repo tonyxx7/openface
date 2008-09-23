@@ -26,3 +26,41 @@ The `openface` directory contains source files from the Open Face Framework. You
 
 ==== openface/php/views ====
 *Definition*
+
+*frame*
+
+A frame is the outermost user interface element of the application. The Open Face controller renders a 'main' frame that contains the rest of the application. 
+
+A frame contains several user interface elements: 
+  * an optional row of hyperlinks at the top with an underline
+  * the application name
+  * an optional list of buttons
+  * an optional row of canvas names
+  * a canvas
+
+*canvas*
+
+Typically an application shows a different canvas depending on the user operation. For example, in the sendACard application, there can be four canvases: 
+  * Cards I can select to send
+  * Inbox with cards friends sent to me
+  * Outbox with cards I sent to friends
+  * Cards I have kept
+
+The contents of each canvas can be completely different from each other. 
+
+*panel*
+
+A canvas can have multiple variations inside. For example, in the Cards I can select to send canvas, cards may be organized by category such as Christmas, birthday, friendship, Thanksgiving, ... etc. Each category can be a _panel_ showing only cards in that category.
+
+|| OpfUIObject.php || It is the parent class of other Open Face classes. Application should not directly reference this class ||
+|| OpfFrameSingleCanvas.php || It implements a frame with only one canvas. There is no row of canvas names. Application may subclass from it to create its 'main' frame. This is not typical ||
+|| OpfFrameMultiCanvas.php || It implements a frame with a row of canvas names below the application name. Application may subclass from it to create its 'main' frame ||
+|| OpfFrameMultiCanvas2.php || It implements a frame with two rows of canvas names: one row at the top and one row below the application name. Application may subclass from it to create its 'main' frame ||
+|| OpfCanvasHelp.php || It implements the canvas when the user clicks on help ||
+|| OpfCanvasMultiPanel.php || It implements a canvas that has multiple sub-panels. Application may subclass from it to create a canvas class ||
+|| OpfCanvas.php || It is the parent class of all application canvas classes. Application must subclass from it to create a canvas class ||
+|| OpfExecuteAction.php || OpfFrame`*` calls this class to executes actions. Application may subclass from it to call its actions ||
+|| OpfPanel.php || It is the parent class of all application panel classes. Application must subclass from it to create a panel class ||
+|| OpfWebParam.php || It is the parent class of OpfFormParam.php and OpfUrlParam.php. Application should not directly reference this class ||
+|| OpfFormParam.php || It is a helper class to construct HTML FORM parameters ||
+|| OpfUrlParam.php || It is a helper class to construct URL parameters typically used in HREF ||
